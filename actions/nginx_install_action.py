@@ -5,16 +5,27 @@ from st2common.runners.base_action import Action
 class Nginx(Action):
     def run(self):
 
-        ssh_client = paramiko.SSHClient()
-        ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh_client.connect(hostname='172.29.0.16')
+        ubuntu_ip = '172.29.0.16'
+        username = 'root'
 
-        # Install Nginx
-        stdin, stdout, stderr = ssh_client.exec_command('apt-get update')
-        print(stdout.read().decode())
+        # Create an SSH client
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-        stdin, stdout, stderr = ssh_client.exec_command('apt-get install -y nginx')
-        print(stdout.read().decode())
+        try:
+            # Connect to the Ubuntu container
+            ssh.connect(ubuntu_ip, username=username)
 
-        ssh_client.close()
+            # Install Nginx
+            install_command = 'apt-get update && apt-get install -y nginx'
+            stdin, stdout, stderr = ssh.exec_command(install_command)
+
+            # Check the installation result
+            if stderr.channel.recv_exit_status() == 0:
+                print('Nginx installed successfully.')
+            else:
+                print('Failed to install Nginx. Error:', stderr.read().decode())
+        finally:
+            # Close the SSH connection
+            ssh.close()
 
