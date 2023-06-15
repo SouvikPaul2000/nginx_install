@@ -5,8 +5,9 @@ from st2common.runners.base_action import Action
 class Nginx(Action):
     def run(self):
 
-        ubuntu_ip = '172.29.0.16'
+        ubuntu_ip = '15a8810bac11'
         username = 'root'
+        password='root'
 
         # Create an SSH client
         ssh = paramiko.SSHClient()
@@ -14,7 +15,7 @@ class Nginx(Action):
 
         try:
             # Connect to the Ubuntu container
-            ssh.connect(ubuntu_ip, username=username)
+            ssh.connect(ubuntu_ip, username=username, password=password)
 
             # Install Nginx
             install_command = 'apt-get update && apt-get install -y nginx'
