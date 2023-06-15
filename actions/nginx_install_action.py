@@ -7,7 +7,7 @@ class Nginx(Action):
 
         ssh_client = paramiko.SSHClient()
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh_client.connect(hostname='172.29.0.16', port='8080')
+        ssh_client.connect(hostname='172.29.0.16')
 
         # Install Nginx
         stdin, stdout, stderr = ssh_client.exec_command('apt-get update')
