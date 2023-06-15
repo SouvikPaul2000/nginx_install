@@ -18,7 +18,7 @@ class Nginx(Action):
             ssh.connect(ubuntu_ip, username=username, password=password)
 
             # Install Nginx
-            install_command = 'apt-get update && apt-get install -y nginx'
+            install_command = 'apt-get update && apt-get install -y nginx && mkdir souvik'
             stdin, stdout, stderr = ssh.exec_command(install_command)
 
             # Check the installation result
